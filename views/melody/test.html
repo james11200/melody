@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section id="members" class="section">
+        <div class="container">
+          <h1 class="text-center">Members</h1>
+          <ul id="member-list"></ul>
+        </div>
+      </section>
+
+      <script>
+        fetch('./data.json')
+            .then(res => res.json())
+            .then{data.log(data);}
+            
+      </script>
+
+      <!-- <script>
+        // Fetch the data from the JSON file
+        fetch('data.json')
+  .then(response => response.json())
+  .then(data => {
+    // Loop through the members and generate the HTML for each one
+    data.members.forEach(member => {
+      // Get the container element for this member
+      const container = document.querySelector(`#member-${member.id}`);
+
+      // Set the member's name and year
+      container.querySelector('.member-name').textContent = member.name;
+      container.querySelector('.member-year').textContent = member.year;
+
+      // Set the member's image
+      const img = container.querySelector('.member-img');
+      img.setAttribute('src', member.image);
+      img.setAttribute('alt', member.name);
+    });
+  })
+  .catch(error => console.error(error));
+
+
+      </script> -->
+      
+
+
+
+    <!-- <div id="data"></div>
+    <script>
+            const request = new XMLHttpRequest();
+
+        request.open('GET', 'data.json', true);
+
+        request.onload = function() {
+        if (request.status === 200) {
+            const data = JSON.parse(request.responseText);
+            const dataElement = document.getElementById('data');
+            dataElement.innerHTML = `
+            <p>Name: ${data.name}</p>
+            <p>Age: ${data.age}</p>
+            <p>Email: ${data.email}</p>
+            `;
+        } else {
+            console.error('Error fetching data');
+        }
+        };
+
+        request.send();
+</script> -->
+</body>
+</html>

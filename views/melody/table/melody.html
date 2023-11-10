@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Information</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        input, button {
+            margin: 10px;
+        }
+        
+        #customerInfo {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Customer Information</h1>
+    <input type="text" id="customerId" placeholder="Enter Customer ID">
+    <button onclick="retrieveCustomer()">Retrieve</button>
+    <div id="customerInfo"></div>
+
+    <script src="script.js"></script>
+    <script>
+        function retrieveCustomer() {
+            var customerId = document.getElementById("customerId").value;
+        
+            // Make an API request to retrieve customer information
+            fetch(`/get-customer?id=${customerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var customerInfo = document.getElementById("customerInfo");
+                    customerInfo.innerHTML = `
+                        <h2>Customer Information</h2>
+                        <p><strong>Name:</strong> ${data.name}</p>
+                        <p><strong>Rank Score:</strong> ${data.rank_score}</p>
+                        <p><strong>Game Result:</strong> ${data.game_result}</p>
+                        <p><strong>Consumption:</strong> ${data.consumption}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error("Error fetching customer information:", error);
+                });
+        }
+        
+    </script>
+</body>
+
+</html>

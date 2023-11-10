@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <title>家家美樂蒂</title>
+</head>
+<body>
+    
+  <div class="table-data">
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="text-center">顧客資料</h2>
+        </div>
+    </section>
+    <table border="1">
+      <tr>
+        <!-- <th>S.N</th> -->
+        <th>姓名</th>
+        <th>電子信箱</th>
+        <th>城市</th>
+        <th>清單</th>
+      </tr>
+      <% if (userData.length !== 0) { %>
+        <% userData.forEach(function(data, index) { %>
+          <tr>
+            <!-- <td><%= index + 1 %></td> -->
+            <td><%= data.fullName %></td>
+            <td><%= data.emailAddress %></td>
+            <td><%= data.city %></td>
+            <td><%= data.list %></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="7">No Data Found</td>
+        </tr>
+      <% } %>
+    </table>
+  </div>
+</body>
+</html>
