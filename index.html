@@ -99,34 +99,63 @@
             margin-right: 15px;
         }
             /* 圖片輪播樣式 */
-        .media-scroller {
-            --spacer: 1rem;
-            overflow-x: auto;
-            padding: var(--spacer) 0;
-            scroll-snap-type: x mandatory;
-        }
-
-        .media-group {
-            display: flex;
-            gap: var(--spacer);
-            padding: 0 var(--spacer);
-        }
-
-        .media-item {
-            flex: 0 0 calc(33.33% - var(--spacer));
-            scroll-snap-align: start;
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .media-item img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+            .media-scroller {
+                --spacer: 1rem;
+                overflow-x: auto;
+                padding: var(--spacer) 0;
+                scroll-snap-type: x mandatory;
+            }
+            
+            .media-group {
+                display: flex;
+                gap: var(--spacer);
+                padding: 0 var(--spacer);
+                transition: transform 0.3s;
+            }
+            
+            .media-item {
+                flex: 0 0 calc(100% - var(--spacer)); /* 默认移动端显示1张 */
+                scroll-snap-align: start;
+                min-width: 0; /* 修复flex项溢出问题 */
+                transition: all 0.3s;
+            }
+            
+            /* 中等屏幕显示2张 */
+            @media (min-width: 768px) {
+                .media-item {
+                    flex: 0 0 calc(50% - var(--spacer));
+                }
+            }
+            
+            /* 大屏幕显示3张 */
+            @media (min-width: 992px) {
+                .media-item {
+                    flex: 0 0 calc(33.33% - var(--spacer));
+                }
+            }
+            
+            .media-item img {
+                width: 100%;
+                height: 300px;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+            
+            /* 移动端优化 */
+            @media (max-width: 576px) {
+                .media-item {
+                    flex: 0 0 90%; /* 保留两侧部分可见 */
+                    scroll-snap-align: center; /* 居中对齐 */
+                }
+                
+                .media-group {
+                    padding: 0 5%; /* 增加两侧留白 */
+                }
+                
+                .media-item img {
+                    height: 250px; /* 降低移动端高度 */
+                }
+            }
 
         /* 向上滑動動畫 */
         [data-animate="slide-up"] {
@@ -405,7 +434,26 @@
                 }
             });
         }
+// 可选：添加触摸滑动检测
+let touchStartX = 0;
+let isDragging = false;
 
+document.querySelector('.media-group').addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    isDragging = true;
+});
+
+document.querySelector('.media-group').addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const touchX = e.touches[0].clientX;
+    const diff = touchStartX - touchX;
+    document.querySelector('.media-group').scrollLeft += diff;
+    touchStartX = touchX;
+});
+
+document.querySelector('.media-group').addEventListener('touchend', () => {
+    isDragging = false;
+});
         // 滾動監聽導航列
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('section');
