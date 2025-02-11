@@ -98,6 +98,47 @@
             width: 30px;
             margin-right: 15px;
         }
+            /* 圖片輪播樣式 */
+        .media-scroller {
+            --spacer: 1rem;
+            overflow-x: auto;
+            padding: var(--spacer) 0;
+            scroll-snap-type: x mandatory;
+        }
+
+        .media-group {
+            display: flex;
+            gap: var(--spacer);
+            padding: 0 var(--spacer);
+        }
+
+        .media-item {
+            flex: 0 0 calc(33.33% - var(--spacer));
+            scroll-snap-align: start;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* 向上滑動動畫 */
+        [data-animate="slide-up"] {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        [data-animate="slide-up"].is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -121,9 +162,9 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#welcome">首頁</a></li>
                     <li class="nav-item"><a class="nav-link" href="#news">最新消息</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">關於我們</a></li>
                     <li class="nav-item"><a class="nav-link" href="#events">比賽公告</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">熱門商品</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">關於我們</a></li>
                     <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
                 </ul>
             </div>
@@ -176,8 +217,45 @@
         </div>
     </section>
 
+    <!-- 關於我們 -->
+    <section id="about" class="section bg-dark text-white">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">關於我們</h2>
+            
+            <!-- 新增圖片輪播區 -->
+            <div class="media-scroller" data-aos="zoom-in">
+                <div class="media-group">
+                    <div class="media-item">
+                        <img src="五條悟公仔.jpeg" alt="店內環境1">
+                    </div>
+                    <div class="media-item">
+                        <img src="寶可夢高級收藏箱.jpg" alt="店內環境2">
+                    </div>
+                    <div class="media-item">
+                        <img src="日輪刀模型.jpg" alt="店內環境3">
+                    </div>
+                    <div class="media-item">
+                        <img src="比賽.png" alt="店內環境4">
+                    </div>
+                    <div class="media-item">
+                        <img src="melody.jpg" alt="店內環境5">
+                    </div>       
+                    <div class="media-item">
+                        <img src="melody.jpg" alt="店內環境5">
+                    </div>       
+                    <div class="media-item">
+                        <img src="melody.jpg" alt="店內環境5">
+                    </div>                                        
+                    <!-- 可繼續添加更多圖片 -->
+                </div>
+            </div>
+    
+            <p class="mt-5 animate-on-scroll" data-aos="fade-up">家家美樂地位於新北市三重區，服務大台北區玩家的卡牌遊戲專門店，提供各式各樣關於卡牌界最新情報、八卦以及動漫遊戲領域相關資訊</p>
+        </div>
+    </section>
+
     <!-- 比賽公告 -->
-    <section id="events" class="section bg-dark text-white">
+    <section id="events" class="section bg-light ">
         <div class="container">
             <h2 class="text-center mb-5" data-aos="fade-up">比賽公告</h2>
             <div class="row g-4">
@@ -198,17 +276,18 @@
     </section>
 
     <!-- 熱門商品 -->
-    <section id="products" class="section bg-light">
+    <section id="products" class="section bg-dark text-white">
         <div class="container">
             <h2 class="text-center mb-5" data-aos="fade-up">熱門商品</h2>
             <div class="row g-4" id="productContainer"></div>
         </div>
     </section>
 
-    <!-- 關於我們 -->
-    <section id="about" class="section bg-dark text-white">
+
+    <!-- 門市資訊 -->
+    <section id="store" class="section bg-light">
         <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">關於我們</h2>
+            <h2 class="text-center mb-5" data-aos="fade-up">門市資訊</h2>
             <div class="row g-4">
                 <div class="col-md-4" data-aos="fade-right">
                     <ul class="list-unstyled">
