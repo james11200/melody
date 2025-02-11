@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家家美樂蒂</title>
+
+    <!-- 資源引入 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Loading 動畫 */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+        
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 3px solid #FFF;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        .loader::after {
+            content: '';  
+            box-sizing: border-box;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 3px solid;
+            border-color: #3b5998 transparent;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 通用樣式 */
+        .section {
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 商品卡片 */
+        .product-card {
+            transition: transform 0.3s;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        /* 地圖容器 */
+        #storeMap {
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 聯絡資訊 */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .contact-icon {
+            width: 30px;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+
+<body class="bg-dark">
+    <!-- Loading 畫面 -->
+    <div id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- 導航列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#welcome">
+                <img src="melody.jpg" alt="logo" width="40" height="40" class="rounded-circle me-2">
+                家家美樂蒂
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#welcome">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#news">最新消息</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#events">比賽公告</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">熱門商品</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">關於我們</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#store">門市資訊</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首頁區 -->
+    <section id="welcome" class="section bg-dark text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 order-md-1" data-aos="fade-left">
+                    <img src="melody.jpg" alt="門市照片" class="img-fluid rounded-circle shadow-lg">
+                </div>
+                <div class="col-md-6 order-md-0" data-aos="fade-right">
+                    <h1 class="display-4 mb-4">歡迎來到家家美樂蒂</h1>
+                    <p class="lead">新北市三重區專業卡牌對戰與動漫周邊專賣店</p>
+                    <p>專業卡牌賣場 各式卡牌遊戲 日系美系 遊戲王OCG 寶可夢PTCG 戰魂王BS數碼寶貝DTCG 還有各種動漫周邊</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="https://www.facebook.com/ccmelody.acg" class="btn btn-outline-light btn-lg rounded-circle">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://shopee.tw/ohmymelody" class="btn btn-outline-light btn-lg rounded-circle">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                        <a href="https://www.instagram.com/ccmelodyacg" class="btn btn-outline-light btn-lg rounded-circle">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最新消息 -->
+    <section id="news" class="section bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">最新消息</h2>
+            <div class="card shadow" data-aos="zoom-in">
+                <div class="card-body">
+                    <h3 class="text-primary">超級購物節</h3>
+                    
+                    <ul class="list-unstyled">
+                        <li class="mb-3"><i class="fas fa-check-circle me-2 text-success"></i>蝦皮全站免運$0起</li>
+                        <li class="mb-3"><i class="fas fa-gift me-2 text-danger"></i>抽iPhone 14與百萬汽車禮包</li>
+                        <li class="mb-3"><i class="fas fa-tag me-2 text-warning"></i>全站85折券最高折$5,000</li>
+                    </ul>
+                    <a href="https://shopee.tw/ohmymelody" class="btn btn-dark">立即查看</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 比賽公告 -->
+    <section id="events" class="section bg-dark text-white">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">比賽公告</h2>
+            <div class="row g-4">
+                <div class="col-md-6" data-aos="fade-right">
+                    <img src="比賽.png" alt="比賽" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="h4 mb-3">最新賽事資訊</div>
+                    <ul class="list-unstyled">
+                        <li class="mb-3"><i class="fas fa-trophy me-2 text-warning"></i>咒術迴戰主題賽 - 9/30開戰</li>
+                        <li class="mb-3"><i class="fas fa-award me-2 text-info"></i>總獎金池 $50,000</li>
+                        <li class="mb-3"><i class="fas fa-users me-2 text-success"></i>團體/個人賽同步舉行</li>
+                    </ul>
+                    <a href="#store" class="btn btn-outline-light">立即報名</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 熱門商品 -->
+    <section id="products" class="section bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">熱門商品</h2>
+            <div class="row g-4" id="productContainer"></div>
+        </div>
+    </section>
+
+    <!-- 關於我們 -->
+    <section id="about" class="section bg-dark text-white">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">關於我們</h2>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-right">
+                    <ul class="list-unstyled">
+                        <p class="mb-3"></p><li><i class="fas fa-map-marker-alt"></i> 新北市三重區三和路四段328號</li>
+                        <p class="mb-3"></p><li><i class="fas fa-envelope"></i><a href="mailto:ccmelodyacg@gmail.com"> ccmelodyacg@gmail.com</a></li>
+                        <p class="mb-3"></p><li><i class="fas fa-phone"></i><a href="tel:+886222805474"> +886 2 2280 5474</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-8" data-aos="fade-left">
+                    <div class="ratio ratio-16x9">
+                        <!-- <div id="storeMap"></div> -->
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.698214675004!2d121.48102677584015!3d25.07821577778771!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9ba655d95ab%3A0x4152417ec3b9daa1!2z5a625a62576O5qiC5Zyw!5e0!3m2!1szh-TW!2stw!4v1739298324308!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 資源引入 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> -->
+
+    <script>
+        // 初始化設定
+        document.addEventListener('DOMContentLoaded', () => {
+            // 載入動畫
+            window.addEventListener('load', () => {
+                const loading = document.getElementById('loading');
+                loading.style.opacity = '0';
+                setTimeout(() => loading.remove(), 500);
+            });
+
+            // 初始化AOS
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-in-out'
+            });
+
+            // 渲染商品
+            renderProducts();
+        });
+
+        // 商品資料
+        const products = [
+            {
+                img: '五條悟公仔.jpeg',
+                title: '咒術迴戰 五條悟公仔',
+                desc: '1/8比例模型 附特典',
+                price: 'NT$1,580'
+            },
+            {
+                img: '日輪刀模型.jpg',
+                title: '鬼滅之刃 日輪刀模型',
+                desc: '全金屬製 1:1比例復刻',
+                price: 'NT$2,980'
+            },
+            {
+                img: '寶可夢高級收藏箱.jpg',
+                title: '寶可夢 高級收藏箱',
+                desc: '2023最新版本 含特典卡',
+                price: 'NT$3,200'
+            }
+        ];
+
+        // 商品渲染函數
+        function renderProducts() {
+            const container = document.getElementById('productContainer');
+            container.innerHTML = products.map((product, index) => `
+                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="${index * 100}">
+                    <div class="product-card shadow">
+                        <img src="${product.img}" class="product-img" alt="${product.title}">
+                        <div class="p-3">
+                            <h5>${product.title}</h5>
+                            <p class="text-muted">${product.desc}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h5 text-primary">${product.price}</span>
+                                <button class="btn btn-sm btn-dark">立即購買</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Google地圖初始化
+        function initMap() {
+            const storeLocation = { lat: 25.084556, lng: 121.494567 };
+            const map = new google.maps.Map(document.getElementById('storeMap'), {
+                zoom: 17,
+                center: storeLocation,
+                styles: [
+                    {
+                        featureType: "poi",
+                        elementType: "labels",
+                        stylers: [{ visibility: "off" }]
+                    },
+                    {
+                        featureType: "transit",
+                        elementType: "labels.icon",
+                        stylers: [{ visibility: "off" }]
+                    }
+                ]
+            });
+
+            new google.maps.Marker({
+                position: storeLocation,
+                map,
+                title: '家家美樂蒂',
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    scaledSize: new google.maps.Size(50, 50)
+                }
+            });
+        }
+
+        // 滾動監聽導航列
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if(window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
+                    const currentId = section.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if(link.getAttribute('href') === `#${currentId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
