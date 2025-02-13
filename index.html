@@ -223,7 +223,7 @@
         -webkit-overflow-scrolling: touch; /* 优化移动端滚动 */
       }
 
-      .media-group {
+    .media-group {
         display: flex;
         flex-wrap: nowrap;
         gap: 1.5rem;
@@ -231,7 +231,7 @@
         padding: 0 2rem;
       }
       
-      .media-item {
+    .media-item {
         flex: 0 0 calc(33.333% - 1rem); /* 每次显示3张 */
         min-width: 300px;
         height: 400px;
@@ -240,65 +240,73 @@
         position: relative;
       }
       
-      .media-item img {
+    .media-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
       }
     
-      /* 响应式调整 */
-      @media (max-width: 768px) {
+    /* 响应式调整 */
+    @media (max-width: 768px) {
         .media-scroller {
           --min-width: 180px;
           gap: 0.8rem;
         }
+        .media-item {
+            flex: 0 0 calc(50% - var(--spacer));
+          }
       }
       
     
     /* 中等屏幕显示2张 */
     @media (min-width: 768px) {
-      .media-item {
-        flex: 0 0 calc(50% - var(--spacer));
-      }
+        .media-item {
+            flex: 0 0 calc(50% - var(--spacer));
+        }
     }
     
-    /* 大屏幕显示3张 */
+    /* 大屏幕显示4张 */
+    @media (max-width: 992px) {
+        .media-scroller {
+          --min-width: 212px;
+          gap: 0.8rem;
+        }
+        .media-item {
+            flex: 0 0 calc(50% - var(--spacer));
+          }
+      }
+      
+    
+    /* 大屏幕显示4张 */
     @media (min-width: 992px) {
         .media-item {
-            flex: 0 0 calc(50% - 1rem); /* 中等屏幕显示2张 */
-            min-width: 250px;
-            height: 350px;
-          }
+            flex: 0 0 calc(50% - var(--spacer));
+        }
     }
+
+
     
-    .media-item img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
     
-    /* 移动端优化 */
+    /* 移动端优化小屏幕显示1张 */
     @media (max-width: 576px) {
+        .media-scroller {
+          --min-width: 100px;
+          gap: 0.8rem;
+        }
         .media-item {
-            flex: 0 0 90%; /* 移动端显示1张 */
-            min-width: 280px;
-            height: 300px;
+            flex: 0 0 calc(50% - var(--spacer));
           }
-      
-      .media-group {
-        padding: 0 5%; /* 增加两侧留白 */
       }
       
-      .media-item img {
-        width: 100%; /* Or set a fixed width */
-        height: 100%; /* Or set a fixed height */
-        object-fit: contain;
-        background-color: black; /* Optional: Add a background color */
-      }
-      
+    
+    /* 大屏幕显示4张 */
+    @media (min-width: 576px) {
+        .media-item {
+            flex: 0 0 calc(50% - var(--spacer));
+        }
     }
+
 
     /* 向上滑動動畫 */
     [data-animate="slide-up"] {
@@ -375,9 +383,9 @@
   </section>
 
   <!-- 最新消息 -->
-  <section id="news" class="section bg-light">
+  <section id="news" class="section bg-light" style="background-image: url('home background.jpg'); background-size: cover; background-position: center; height: 100vh; border-bottom: 10px solid white;">
     <div class="container">
-      <h2 class="text-center mb-5" data-aos="fade-up">最新消息</h2>
+      <h2 class="text-center mb-5 text-white" data-aos="fade-up">最新消息</h2>
       <div class="row g-4 news-row"> <!-- 新增news-row類 -->
         <!-- 單個新聞項目 -->
         <div class="col-md-4 news-item" data-aos="fade-up" data-bs-toggle="modal" data-bs-target="#newsModal" data-index="0">
@@ -395,9 +403,9 @@
         <div class="col-md-4 news-item" data-aos="fade-up" data-bs-toggle="modal" data-bs-target="#newsModal" data-index="1">
           <div class="card h-100 shadow">
             <div class="card-body">
-              <h5 class="text-primary">最新賽事咒術迴戰主題賽</h5>
+              <h5 class="text-primary">最新賽事航海王主題賽</h5>
               <ul class="list-unstyled">
-                <li class="text-truncate"><i class="fas fa-check-circle me-2 text-success"></i>咒術迴戰主題賽 - 9/30開戰...</li>
+                <li class="text-truncate"><i class="fas fa-check-circle me-2 text-success"></i>航海王主題賽 - 9/30開戰...</li>
               </ul>
               <div class="text-end small text-muted">點擊查看詳情</div>
             </div>
@@ -492,7 +500,7 @@
         <div class="col-md-6" data-aos="fade-left">
           <div class="h4 mb-3">最新賽事資訊</div>
           <ul class="list-unstyled">
-            <li class="mb-3"><i class="fas fa-trophy me-2 text-warning"></i>咒術迴戰主題賽 - 9/30開戰</li>
+            <li class="mb-3"><i class="fas fa-trophy me-2 text-warning"></i>航海王主題賽 - 9/30開戰</li>
             <li class="mb-3"><i class="fas fa-award me-2 text-info"></i>總獎金池 $50,000</li>
             <li class="mb-3"><i class="fas fa-users me-2 text-success"></i>團體/個人賽同步舉行</li>
           </ul>
@@ -551,10 +559,10 @@
           `
         },
         {
-          title: '最新賽事咒術迴戰主題賽',
+          title: '最新賽事航海王主題賽',
           content: `
             <ul class="list-unstyled">
-              <li class="mb-3"><i class="fas fa-check-circle me-2 text-success"></i>咒術迴戰主題賽 - 9/30開戰 </li>
+              <li class="mb-3"><i class="fas fa-check-circle me-2 text-success"></i>航海王主題賽 - 9/30開戰 </li>
               <li class="mb-3"><i class="fas fa-gift me-2 text-danger"></i>總獎金池 $50,000</li>
               <li class="mb-3"><i class="fas fa-tag me-2 text-warning"></i>團體/個人賽同步舉行</li>
             </ul>
@@ -562,14 +570,14 @@
           `
         },
         {
-          title: 'FF同人展美樂蒂參展攤位',
+          title: 'FF44 開拓動漫美樂蒂參展確定',
           content: `
             <ul class="list-unstyled">
               <li class="mb-3"><i class="fas fa-check-circle me-2 text-success"></i>全台最大FF同人展即將到來</li>
               <li class="mb-3"><i class="fas fa-gift me-2 text-danger"></i>美樂蒂參展確定</li>
-              <li class="mb-3"><i class="fas fa-tag me-2 text-warning"></i>歡迎來美樂蒂攤位參觀</li>
+              <li class="mb-3"><i class="fas fa-tag me-2 text-warning"></i>攤位號碼待公布</li>
             </ul>
-            <a href="#events" class="btn btn-dark">立即查看</a>
+            <a href="https://www.f-2.com.tw/" class="btn btn-dark">立即查看</a>
           `
         }
       ];
