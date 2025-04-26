@@ -535,10 +535,9 @@
   <!-- 資源引入 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script> -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 新聞數據
+      // —— 1. 資料定義 —— 
       const newsData = [
         {
           title: '美樂地卡牌蝦皮賣場 優惠活動進行中',
@@ -555,7 +554,7 @@
           title: '最新賽事航海王主題賽',
           content: `
             <ul class="list-unstyled">
-              <li class="mb-3"><i class="fas fa-check-circle me-2 text-success"></i>航海王主題賽 - 9/30開戰 </li>
+              <li class="mb-3"><i class="fas fa-check-circle me-2 text-success"></i>航海王主題賽 - 9/30開戰</li>
               <li class="mb-3"><i class="fas fa-gift me-2 text-danger"></i>總獎金池 $50,000</li>
               <li class="mb-3"><i class="fas fa-tag me-2 text-warning"></i>團體/個人賽同步舉行</li>
             </ul>
@@ -574,226 +573,193 @@
           `
         }
       ];
-
-      // 模態框事件處理
-      const newsModal = document.getElementById('newsModal');
+    
+      const productsData = [
+        {
+          img: '航海王.jpg',
+          title: '航海王卡牌遊戲 兩週年紀念套組 / ONE PIECE CARD GAME 2ND ANNIVERSARY SET',
+          desc: '卡牌: 9張 (全9款x各1張)，橡膠製遊戲墊: 1張，卡套: 1款 (各70張)，卡盒: 1個，遊戲墊盒: 1個，骰子: 4個，儲存盒: 1個',
+          price: 'NT$5,000'
+        },
+        {
+          img: '日輪刀模型.jpg',
+          title: '鬼滅之刃 日輪刀模型',
+          desc: '全金屬製 1:1比例復刻',
+          price: 'NT$2,980'
+        },
+        {
+          img: '寶可夢高級收藏箱.jpg',
+          title: '寶可夢 高級收藏箱',
+          desc: '2023最新版本 含特典卡',
+          price: 'NT$3,200'
+        }
+      ];
+    
+      // —— 2. 快取 DOM —— 
+      const newsModal      = document.getElementById('newsModal');
+      const newsStack      = document.querySelector('.news-stack');
+      const galleryGroup   = document.querySelector('.media-group');
+      const productContainer = document.getElementById('productContainer');
+      const galleryContainer = document.getElementById('galleryContainer');
+      const loadingOverlay = document.getElementById('loading');
+      const navLinks       = document.querySelectorAll('.nav-link');
+      const sections       = document.querySelectorAll('section');
+    
+      // —— 3. 新聞 Modal 處理 —— 
       if (newsModal) {
         newsModal.addEventListener('show.bs.modal', event => {
-          const button = event.relatedTarget;
-          const index = parseInt(button.dataset.index);
-          const news = newsData[index];
-          
-          document.getElementById('newsModalTitle').textContent = news.title;
-          document.getElementById('newsModalContent').innerHTML = news.content;
+          const btn   = event.relatedTarget;
+          const idx   = parseInt(btn?.dataset.index);
+          const news  = newsData[idx];
+          if (news) {
+            document.getElementById('newsModalTitle').textContent   = news.title;
+            document.getElementById('newsModalContent').innerHTML   = news.content;
+          }
         });
-      }
-
-      // 刪除原本的新聞卡片輪播相關代碼...
-    });
-  </script>
-  <script>
-    // 初始化設定
-    document.addEventListener('DOMContentLoaded', () => {
-      // 載入動畫
-      window.addEventListener('load', () => {
-        const loading = document.getElementById('loading');
-        loading.style.opacity = '0';
-        setTimeout(() => loading.remove(), 500);
-      });
-
-      // 初始化 AOS
-      AOS.init({
-        duration: 800,
-        once: true,
-        offset: 100,
-        easing: 'ease-in-out'
-      });
-
-      // 渲染熱門商品
-      renderProducts();
-
-      // 載入相簿圖片（從 photos.json）
-      loadGalleryImages();
-
-      initNewsCards();
-
-    });
-
-    // 修改後的動態圖片載入函數，從 photos.json 讀取資料
-    async function loadGalleryImages() {
-      const container = document.getElementById('galleryContainer');
-      try {
-        const response = await fetch('photos.json');
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`);
-        }
-        const images = await response.json();
-        container.innerHTML = images.map(img => `
-          <div class="media-item">
-            <img src="${img.src}" alt="${img.alt}" loading="lazy">
-          </div>
-        `).join('');
-      } catch (error) {
-        console.error('加载失败:', error);
-        container.innerHTML = '<p>图片加载失败，请稍后刷新</p>';
-      }
-    }
-    // 新聞卡片互動邏輯
-    function initNewsCards() {
-        const cards = document.querySelectorAll('.news-card');
-        let currentIndex = 0;
-      
-        function updateCards() {
-          cards.forEach((card, index) => {
-            card.classList.remove('active', 'prev', 'next', 'far-prev', 'far-next');
-            
-            const diff = index - currentIndex;
-            if(diff === 0) {
-              card.classList.add('active');
-            } else if(diff === -1) {
-              card.classList.add('prev');
-            } else if(diff === 1) {
-              card.classList.add('next');
-            } else if(diff < -1) {
-              card.classList.add('far-prev');
-            } else if(diff > 1) {
-              card.classList.add('far-next');
-            }
-          });
-        }
-      
-        // 自動輪播邏輯（可選）
-        let autoPlay = setInterval(() => {
-          currentIndex = (currentIndex + 1) % cards.length;
-          updateCards();
-        }, 5000);
-      
-        // 暫停自動輪播當鼠標懸停
-        document.querySelector('.news-stack').addEventListener('mouseenter', () => {
-          clearInterval(autoPlay);
-        });
-      
-        document.querySelector('.news-stack').addEventListener('mouseleave', () => {
-          autoPlay = setInterval(() => {
-            currentIndex = (currentIndex + 1) % cards.length;
-            updateCards();
-          }, 5000);
-        });
-      
-        // 點擊事件處理
-        cards.forEach((card, index) => {
-          card.addEventListener('click', () => {
-            currentIndex = index;
-            updateCards();
-          });
-        });
-      
-        updateCards(); // 初始化
       }
     
-    // 商品資料
-    const products = [
-      {
-        img: '航海王.jpg',
-        title: '航海王卡牌遊戲 兩週年紀念套組 / ONE PIECE CARD GAME 2ND ANNIVERSARY SET',
-        desc: '卡牌: 9張 (全9款x各1張)，橡膠製遊戲墊: 1張，卡套: 1款 (各70張)，卡盒: 1個，遊戲墊盒: 1個，骰子: 4個，儲存盒: 1個',
-        price: 'NT$5,000'
-      },
-      {
-        img: '日輪刀模型.jpg',
-        title: '鬼滅之刃 日輪刀模型',
-        desc: '全金屬製 1:1比例復刻',
-        price: 'NT$2,980'
-      },
-      {
-        img: '寶可夢高級收藏箱.jpg',
-        title: '寶可夢 高級收藏箱',
-        desc: '2023最新版本 含特典卡',
-        price: 'NT$3,200'
+      // —— 4. Loading 動畫 —— 
+      if (loadingOverlay) {
+        window.addEventListener('load', () => {
+          loadingOverlay.style.opacity = '0';
+          setTimeout(() => loadingOverlay.remove(), 500);
+        });
       }
-    ];
-
-    // 商品渲染函數
-    function renderProducts() {
-        const container = document.getElementById('productContainer');
-        container.innerHTML = products.map((product, index) => `
-          <div class="col-md-4 d-flex"> 
+    
+      // —— 5. AOS 初始化 —— 
+      if (typeof AOS !== 'undefined') {
+        AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-in-out' });
+      }
+    
+      // —— 6. Render Products —— 
+      function renderProducts() {
+        if (!productContainer) return;
+        productContainer.innerHTML = productsData.map(p => `
+          <div class="col-md-4 d-flex">
             <div class="product-card shadow w-100">
-              <img src="${product.img}" class="product-img" alt="${product.title}">
+              <img src="${p.img}" class="product-img" alt="${p.title}">
               <div class="card-body">
-                <h5>${product.title}</h5>
-                <p class="text-muted">${product.desc}</p>
+                <h5>${p.title}</h5>
+                <p class="text-muted">${p.desc}</p>
                 <div class="product-footer">
-                  <span class="h5 text-primary">${product.price}</span>
+                  <span class="h5 text-primary">${p.price}</span>
                   <button class="btn btn-sm btn-dark">立即購買</button>
                 </div>
               </div>
             </div>
           </div>
         `).join('');
-    }
+      }
     
-    // Google地圖初始化（如果需要的話）
-    function initMap() {
-      const storeLocation = { lat: 25.084556, lng: 121.494567 };
-      const map = new google.maps.Map(document.getElementById('storeMap'), {
-        zoom: 17,
-        center: storeLocation,
-        styles: [
-          { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
-          { featureType: "transit", elementType: "labels.icon", stylers: [{ visibility: "off" }] }
-        ]
-      });
-
-      new google.maps.Marker({
-        position: storeLocation,
-        map,
-        title: '家家美樂蒂',
-        icon: {
-          url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-          scaledSize: new google.maps.Size(50, 50)
+      // —— 7. Gallery 圖片載入 —— 
+      async function loadGalleryImages() {
+        if (!galleryContainer) return;
+        try {
+          const resp   = await fetch('photos.json');
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const imgs   = await resp.json();
+          galleryContainer.innerHTML = imgs.map(img => `
+            <div class="media-item">
+              <img src="${img.src}" alt="${img.alt}" loading="lazy">
+            </div>
+          `).join('');
+        } catch (err) {
+          console.error('圖片載入失敗:', err);
+          galleryContainer.innerHTML = '<p>圖片載入失敗，請稍後刷新</p>';
         }
-      });
-    }
-
-    // 可选：添加触摸滑动检测（圖片輪播）
-    let touchStartX = 0;
-    let isDragging = false;
-
-    document.querySelector('.media-group').addEventListener('touchstart', e => {
-      touchStartX = e.touches[0].clientX;
-      isDragging = true;
-    });
-    document.querySelector('.media-group').addEventListener('touchmove', e => {
-      if (!isDragging) return;
-      const touchX = e.touches[0].clientX;
-      const diff = touchStartX - touchX;
-      document.querySelector('.media-group').scrollLeft += diff;
-      touchStartX = touchX;
-    });
-    document.querySelector('.media-group').addEventListener('touchend', () => {
-      isDragging = false;
-    });
-
-    // 滾動監聽導航列
-    window.addEventListener('scroll', () => {
-      const sections = document.querySelectorAll('section');
-      const navLinks = document.querySelectorAll('.nav-link');
-
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight - 100) {
-          const currentId = section.getAttribute('id');
-          navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentId}`) {
-              link.classList.add('active');
-            }
+      }
+    
+      // —— 8. 新聞卡片互動輪播 —— 
+      function initNewsCards() {
+        const cards = document.querySelectorAll('.news-card');
+        if (!cards.length || !newsStack) return;
+        let currentIndex = 0;
+    
+        function update() {
+          cards.forEach((card, i) => {
+            card.classList.remove('active', 'prev', 'next', 'far-prev', 'far-next');
+            const d = i - currentIndex;
+            if      (d === 0)  card.classList.add('active');
+            else if (d === -1) card.classList.add('prev');
+            else if (d === 1)  card.classList.add('next');
+            else if (d < -1)   card.classList.add('far-prev');
+            else if (d > 1)    card.classList.add('far-next');
           });
         }
+    
+        let autoPlay = setInterval(() => {
+          currentIndex = (currentIndex + 1) % cards.length;
+          update();
+        }, 5000);
+    
+        newsStack.addEventListener('mouseenter', () => clearInterval(autoPlay));
+        newsStack.addEventListener('mouseleave', () => {
+          autoPlay = setInterval(() => {
+            currentIndex = (currentIndex + 1) % cards.length;
+            update();
+          }, 5000);
+        });
+    
+        cards.forEach((card, i) => card.addEventListener('click', () => {
+          currentIndex = i;
+          update();
+        }));
+    
+        update();
+      }
+    
+      // —— 9. 地圖初始化（有載入 Google Maps API 時） —— 
+      function initMap() {
+        if (typeof google === 'undefined' || !document.getElementById('storeMap')) return;
+        const loc = { lat: 25.084556, lng: 121.494567 };
+        const map = new google.maps.Map(document.getElementById('storeMap'), {
+          center: loc, zoom: 17,
+          styles: [
+            { featureType: "poi",   elementType: "labels",      stylers: [{ visibility: "off" }] },
+            { featureType: "transit", elementType: "labels.icon", stylers: [{ visibility: "off" }] }
+          ]
+        });
+        new google.maps.Marker({
+          position: loc, map,
+          icon: { url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', scaledSize: new google.maps.Size(50, 50) }
+        });
+      }
+    
+      // —— 10. 圖庫 滑動偵測 —— 
+      if (galleryGroup) {
+        let touchX0 = 0, dragging = false;
+        galleryGroup.addEventListener('touchstart', e => { touchX0 = e.touches[0].clientX; dragging = true; });
+        galleryGroup.addEventListener('touchmove',  e => {
+          if (!dragging) return;
+          const dx = touchX0 - e.touches[0].clientX;
+          galleryGroup.scrollLeft += dx;
+          touchX0 = e.touches[0].clientX;
+        });
+        galleryGroup.addEventListener('touchend',   () => dragging = false);
+      }
+    
+      // —— 11. 滾動監聽（Scroll‐spy） —— 
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        sections.forEach(sec => {
+          const top  = sec.offsetTop - 100;
+          const bot  = top + sec.clientHeight;
+          const id   = sec.id;
+          if (y >= top && y < bot) {
+            navLinks.forEach(a => {
+              a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
+            });
+          }
+        });
       });
+    
+      // —— 12. 啟動所有邏輯 —— 
+      renderProducts();
+      loadGalleryImages();
+      initNewsCards();
+      initMap();
     });
-  </script>
+    </script>
+    
 </body>
 </html>
